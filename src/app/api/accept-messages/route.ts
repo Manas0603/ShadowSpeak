@@ -73,19 +73,27 @@ export async function GET(request: Request) {
             )
     }
     const userId= user._id;
-    const foundUser=await UserModel.findById(userId)
-    if(!foundUser){
+    try {
+        const foundUser=await UserModel.findById(userId)
+        if(!foundUser){
+            return Response.json({
+                success: false,
+                message: "User not found",
+            },{status:404})
+            
+        } 
+        else{
+            return Response.json({
+                success: true,
+                isAcceptingMessages: foundUser.isAcceptingMessages,
+                user:foundUser
+            },{status:200})
+        } 
+    } catch (error) {
+        console.log("failed to update user status", error);
         return Response.json({
             success: false,
-            message: "User not found",
-        },{status:404})
-        
-    } 
-    else{
-        return Response.json({
-            success: true,
-            isAcceptingMessages: foundUser.isAcceptingMessages,
-            user:foundUser
-        },{status:200})
-    }  
+            message: "Error getting umessage acceptance status",
+        },{status:500})
+    }
 }
