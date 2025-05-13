@@ -2,6 +2,7 @@ import mongoose ,{Document,Schema} from "mongoose";
 
 
 export interface Message extends Document{
+    _id: string;
     content:string;
     createdAt:Date;
 }
@@ -35,7 +36,6 @@ export interface User extends Document{
     const UserSchema : Schema<User> = new Schema({
         username:{
             type:String,
-            unique:true,
             trim:true,
             required:[true,"Username is Required"]
         },
